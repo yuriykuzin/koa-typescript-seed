@@ -1,0 +1,32 @@
+{
+  "name": "koa-typescript-seed",
+  "version": "1.0.0",
+  "description": "Koa + TypeScript starter kit",
+  "main": "index.js",
+  "dependencies": {
+    "koa": "^2.6.1",
+    "koa-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.5",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuriykuzin/koa-typescript-seed.git"
+  },
+  "keywords": [
+    "koa",
+    "typescript"
+  ],
+  "author": "Yuriy Kuzin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuriykuzin/koa-typescript-seed/issues"
+  },
+  "homepage": "https://github.com/yuriykuzin/koa-typescript-seed#readme"
+}
