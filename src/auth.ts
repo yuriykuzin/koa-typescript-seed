@@ -75,17 +75,11 @@ export class Auth {
           callbackURL: config.baseApiUrl + '/auth/facebook/callback',
         },
         // tslint:disable-next-line:typedef
-        async (_token, _tokenSecret, profile, done) => {
+        (_token, _tokenSecret, profile, done) => {
           tmpProfile = profile;
-
-          try {
-            const user: IUser = await fetchUser();
-            done(null, { user, profile });
-
-            return;
-          } catch (err) {
-            done(err);
-          }
+          fetchUser()
+            .then((user: IUser) => done(null, { user, profile }))
+            .catch((err: any) => done(err));
         },
       ),
     );
