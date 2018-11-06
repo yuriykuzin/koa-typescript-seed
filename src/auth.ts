@@ -22,6 +22,8 @@ const fetchUser: () => Promise<IUser> = (() => {
   return async () => user;
 })();
 
+let tmpProfile: {} = {};
+
 export class Auth {
   public static setupStrategies(): void {
     passport.serializeUser(
@@ -34,7 +36,7 @@ export class Auth {
       async (_id: number, done: (err: any, user?: {} | undefined) => void) => {
         try {
           const user: IUser = await fetchUser();
-          done(null, user);
+          done(null, { user, tmpProfile });
         } catch (err) {
           done(err);
         }
@@ -73,9 +75,17 @@ export class Auth {
           callbackURL: config.baseApiUrl + '/auth/facebook/callback',
         },
         // tslint:disable-next-line:typedef
-        (_token, _tokenSecret, profile, done) => {
-          console.log(JSON.stringify(profile));
-          done(null, profile);
+        async (_token, _tokenSecret, profile, done) => {
+          tmpProfile = profile;
+
+          try {
+            const user: IUser = await fetchUser();
+            done(null, { user, profile });
+
+            return;
+          } catch (err) {
+            done(err);
+          }
         },
       ),
     );
