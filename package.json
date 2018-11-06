@@ -35,7 +35,7 @@
     "postinstall": "bash ./setup-hooks.sh",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./src/server.ts",
-    "start": "npm run build && node ./dist/server.js",
+    "start": "node ./dist/server.js",
     "build-ts": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && npm run tslint && npm run build-ts"
