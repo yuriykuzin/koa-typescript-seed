@@ -1,2 +1,2 @@
 # koa-typescript-seed
-KOA + TypeScript seed
+My Koa + TypeScript seed

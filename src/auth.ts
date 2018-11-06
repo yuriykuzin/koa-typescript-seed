@@ -1,6 +1,6 @@
 import * as passport from 'koa-passport';
 import { Context } from 'koa';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
+import { Strategy as FacebookStrategy, Profile } from 'passport-facebook';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 import { config } from './config';
@@ -22,26 +22,20 @@ const fetchUser: () => Promise<IUser> = (() => {
   return async () => user;
 })();
 
-let tmpProfile: {} = {};
-
 export class Auth {
   public static setupStrategies(): void {
-    passport.serializeUser(
-      (user: { id: number }, done: (err: any, id?: number | undefined) => void) => {
-        done(null, user.id);
-      },
-    );
+    passport.serializeUser((user: IUser, done: Function) => {
+      done(null, user.id);
+    });
 
-    passport.deserializeUser(
-      async (_id: number, done: (err: any, user?: {} | undefined) => void) => {
-        try {
-          const user: IUser = await fetchUser();
-          done(null, { user, tmpProfile });
-        } catch (err) {
-          done(err);
-        }
-      },
-    );
+    passport.deserializeUser(async (_id: number, done: Function) => {
+      try {
+        const user: IUser = await fetchUser();
+        done(null, user);
+      } catch (err) {
+        done(err);
+      }
+    });
 
     passport.use(
       new LocalStrategy(
@@ -53,6 +47,7 @@ export class Auth {
           try {
             const user: IUser = await fetchUser();
 
+            // later on we'll use hash check here of course
             if (username === user.username && password === user.password) {
               done(null, user);
 
@@ -72,20 +67,17 @@ export class Auth {
         {
           clientID: config.facebookClientId,
           clientSecret: config.facebookClientSecret,
-          callbackURL: config.baseApiUrl + '/auth/facebook/callback',
+          callbackURL: `${config.baseApiUrl}/auth/facebook/callback`,
         },
-        // tslint:disable-next-line:typedef
-        (_token, _tokenSecret, profile, done) => {
-          tmpProfile = profile;
-          fetchUser()
-            .then((user: IUser) => done(null, { user, profile }))
-            .catch((err: any) => done(err));
+        (_accessToken: string, _refreshToken: string, _profile: Profile, done: Function) => {
+          // this is just a sample
+          fetchUser().then((user: IUser) => done(null, user));
         },
       ),
     );
   }
 
-  public static guard(ctx: Context, next: Function): Promise<any> | void {
+  public static addGuard(ctx: Context, next: Function): Promise<any> | void {
     if (ctx.isAuthenticated()) {
       return next();
     }

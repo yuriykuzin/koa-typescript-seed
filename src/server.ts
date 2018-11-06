@@ -19,16 +19,16 @@ app.use(cors());
 app.use(logger(winston));
 app.use(bodyParser());
 
-app.keys = ['some-secret-key'];
+app.keys = [config.sessionSecretKey];
 app.use(session({ key: 'sID' }, app));
 Auth.setupStrategies();
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(publicRoutes.routes());
-app.use(Auth.guard);
+app.use(Auth.addGuard);
 app.use(privateRoutes.routes());
 
 app.listen(config.port);
 
-console.log('Server running on port 3000');
+console.log(`Server running on port ${config.port}`);

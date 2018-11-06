@@ -29,14 +29,6 @@ publicRoutes.post(
   }),
 );
 
-publicRoutes.post(
-  '/login',
-  passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-  }),
-);
-
 publicRoutes.get('/logout', (ctx: Context) => {
   ctx.logout();
   ctx.redirect('/');

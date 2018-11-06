@@ -2,9 +2,7 @@ import * as Koa from 'koa';
 import { config } from './config';
 import * as winston from 'winston';
 
-// tslint:disable-next-line:no-any
 export function logger(winstonInstance: any): any {
-  // tslint:disable-next-line:no-any
   return async (ctx: Koa.Context, next: Function) => {
     const start: number = new Date().getMilliseconds();
 
@@ -13,7 +11,6 @@ export function logger(winstonInstance: any): any {
     const ms: number = new Date().getMilliseconds() - start;
 
     let logLevel: string = 'info';
-
     if (ctx.status >= 500) {
       logLevel = 'error';
     }
