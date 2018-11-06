@@ -32,7 +32,7 @@
     "typescript": "^3.1.6"
   },
   "scripts": {
-    "postinstall": "bash ./setup-hooks.sh",
+    "postinstall": "bash ./setup-hooks.sh && npm run build",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "watch": "nodemon --watch 'src/**/*' -e ts,tsx --exec 'ts-node' ./src/server.ts",
     "start": "node ./dist/server.js",
